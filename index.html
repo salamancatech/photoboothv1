@@ -81,6 +81,14 @@
         </header>
 
         <div class="space-y-6" id="mainControls">
+            <!-- API Key Input Section -->
+            <div class="glass-panel p-6 rounded-2xl shadow-lg border border-yellow-500/30">
+                <div class="flex gap-4 items-center">
+                    <svg class="w-6 h-6 text-yellow-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
+                    <input type="password" id="apiKeyInput" class="flex-1 bg-gray-900/80 border border-gray-600 rounded-xl p-3 outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/50 transition-all shadow-inner" placeholder="Paste your Gemini API Key here...">
+                </div>
+            </div>
+
             <!-- Main Prompt Area (Spans full width for better typing) -->
             <div class="glass-panel p-6 rounded-2xl shadow-lg border border-yellow-500/30">
                 <h2 class="text-xl font-bold mb-4 text-yellow-400 flex items-center gap-2">
@@ -187,8 +195,6 @@
     </div>
 
     <script>
-        // Use environment provided key
-        const apiKey = ""; 
         let uploadedJsonContent = null;
         let sessionGallery = []; // Track past generations
         let characterList = []; // Track character files and their name inputs
@@ -421,6 +427,12 @@
 
         // Main Generation Logic
         generateBtn.onclick = async () => {
+            const apiKey = document.getElementById('apiKeyInput').value.trim();
+            if (!apiKey) {
+                showModal("API Key Required", "Please enter your Gemini API Key in the field at the top.");
+                return;
+            }
+
             const style = document.getElementById('stylePreset').value;
             const lighting = document.getElementById('lightingPreset').value;
             const basePrompt = document.getElementById('userPrompt').value.trim();
