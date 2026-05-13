@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prompt Punks Photobooth v1</title>
+    <title>Nano Banana Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* The Animated Rainbow Background */
@@ -256,10 +256,14 @@
                     <textarea id="editPrompt" rows="2" class="w-full bg-gray-900/80 border border-gray-600 rounded-xl p-3 text-sm outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/50 transition-all resize-none shadow-inner" placeholder="Explain your annotation (e.g., 'turn the sketched area into a blue spaceship') or apply a new prompt to this image..."></textarea>
                 </div>
 
-                <div class="mt-4 flex flex-col sm:flex-row gap-4 justify-center w-full max-w-md">
-                    <button id="editBtn" class="flex-1 bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 px-6 rounded-xl shadow-[0_0_15px_rgba(147,51,234,0.5)] hover:shadow-[0_0_20px_rgba(147,51,234,0.8)] transition-all flex items-center justify-center gap-2">
+                <div class="mt-4 flex flex-col sm:flex-row gap-4 justify-center w-full max-w-lg">
+                    <button id="editBtn" class="flex-1 bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 px-6 rounded-xl shadow-[0_0_15px_rgba(147,51,234,0.5)] hover:shadow-[0_0_20px_rgba(147,51,234,0.8)] transition-all flex items-center justify-center gap-2 text-sm">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
-                        Apply Edits to Image
+                        Apply Edits
+                    </button>
+                    <button id="downloadBtn" class="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-xl shadow-[0_0_15px_rgba(22,163,74,0.5)] hover:shadow-[0_0_20px_rgba(22,163,74,0.8)] transition-all flex items-center justify-center gap-2 text-sm">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Save Image
                     </button>
                 </div>
             </div>
@@ -298,6 +302,7 @@
         // UI Elements
         const generateBtn = document.getElementById('generateBtn');
         const editBtn = document.getElementById('editBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
         const envInput = document.getElementById('envImage');
         const envJsonInput = document.getElementById('envJson');
         const charInput = document.getElementById('charImages');
@@ -591,9 +596,13 @@
                 card.innerHTML = `
                     <div class="h-48 overflow-hidden bg-gray-900 relative">
                         <img src="${item.imageUrl}" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity">
-                        <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" onclick="restoreSettings('${item.id}')">
-                            <button class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-2 px-4 rounded-xl shadow-[0_0_15px_rgba(234,179,8,0.5)] transform scale-95 group-hover:scale-100 transition-all">
+                        <div class="absolute inset-0 bg-black/60 flex flex-col items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button onclick="restoreSettings('${item.id}')" class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-2 px-4 rounded-xl shadow-[0_0_15px_rgba(234,179,8,0.5)] transform scale-95 group-hover:scale-100 transition-all w-3/4 text-sm">
                                 Apply Settings
+                            </button>
+                            <button onclick="downloadImage('${item.imageUrl}', 'nano-banana-${item.id}.png', event)" class="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-xl shadow-[0_0_15px_rgba(22,163,74,0.5)] transform scale-95 group-hover:scale-100 transition-all w-3/4 flex items-center justify-center gap-2 text-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                Save
                             </button>
                         </div>
                     </div>
@@ -641,6 +650,17 @@
                 statusMsg.classList.add('text-emerald-400');
                 statusMsg.classList.remove('text-yellow-400');
             }, 3000);
+        };
+
+        // Utility: Download Base64 Image
+        window.downloadImage = function(dataUrl, filename, event = null) {
+            if (event) event.stopPropagation(); // Prevent triggering background click events
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = filename || 'nano-banana-generation.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         };
 
         // API Key Validation Logic
@@ -930,6 +950,11 @@
         // Button Listeners
         generateBtn.onclick = () => executeGeneration(false);
         editBtn.onclick = () => executeGeneration(true);
+        downloadBtn.onclick = () => {
+            if (outputImg.src) {
+                downloadImage(outputImg.src, 'nano-banana-generated-' + Date.now() + '.png');
+            }
+        };
 
     </script>
 </body>
