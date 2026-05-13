@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nano Banana Studio</title>
+    <title>Prompt Punks Photobooth - V1</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* The Animated Rainbow Background */
@@ -75,7 +75,7 @@
     <div class="relative z-10 max-w-5xl mx-auto space-y-6">
         <header class="text-center py-6">
             <h1 class="text-5xl font-extrabold tracking-tighter text-yellow-400 drop-shadow-lg">
-                🍌 Nano Banana <span class="text-white">Studio</span>
+                📸 Prompt Punks <span class="text-white">Photobooth - V1</span>
             </h1>
             <p id="statusMsg" class="text-emerald-400 mt-2 font-medium tracking-wide uppercase text-sm">System Online. Local Database Active.</p>
         </header>
@@ -340,7 +340,7 @@
         const ctx = canvas.getContext('2d', { willReadFrequently: true });
         
         // --- INDEXED DB SETUP ---
-        const dbName = "NanoBananaDB";
+        const dbName = "PromptPunksDB";
         const dbVersion = 1;
         let db;
 
@@ -828,7 +828,7 @@
                             <button onclick="restoreSettings('${item.id}')" class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-2 px-4 rounded-xl shadow-[0_0_15px_rgba(234,179,8,0.5)] transform scale-95 group-hover:scale-100 transition-all w-3/4 text-sm">
                                 Apply Settings
                             </button>
-                            <button onclick="downloadImage('${item.imageUrl}', 'nano-banana-${item.id}.png', event)" class="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-xl shadow-[0_0_15px_rgba(22,163,74,0.5)] transform scale-95 group-hover:scale-100 transition-all w-3/4 flex items-center justify-center gap-2 text-sm">
+                            <button onclick="downloadImage('${item.imageUrl}', 'prompt-punks-${item.id}.png', event)" class="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-xl shadow-[0_0_15px_rgba(22,163,74,0.5)] transform scale-95 group-hover:scale-100 transition-all w-3/4 flex items-center justify-center gap-2 text-sm">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                                 Save
                             </button>
@@ -882,7 +882,7 @@
             if (event) event.stopPropagation(); 
             const link = document.createElement('a');
             link.href = dataUrl;
-            link.download = filename || 'nano-banana-generation.png';
+            link.download = filename || 'prompt-punks-generation.png';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -1165,7 +1165,7 @@
         editBtn.onclick = () => executeGeneration(true);
         downloadBtn.onclick = () => {
             if (outputImg.src) {
-                downloadImage(outputImg.src, 'nano-banana-generated-' + Date.now() + '.png');
+                downloadImage(outputImg.src, 'prompt-punks-generated-' + Date.now() + '.png');
             }
         };
 
